@@ -78,5 +78,4 @@ typedef enum {
 
 #define SYNTHPASS_PACKET_SIZE sizeof(SynthPass_Packet_T)
 
-
 #endif
