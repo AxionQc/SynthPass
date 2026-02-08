@@ -136,11 +136,11 @@ void incoming_frame_handler() {
 	int rssi = iSLERRSSI();
 	int corrected_rssi = rssi - frame->msg.hdr.ref_rssi - SYNTHPASS_REF_RXRSSI;
 
-	printf("RX'd! RSSI:%d PDU:%d len:%d MAC", rssi, frame->pdu, frame->length);
-	for(int i = 0; i < SYNTHPASS_MAC_SIZE; ++i) {
-		printf(":%02x", frame->mac[i]);
-	}
-	printf("\n");
+	// printf("RX'd! RSSI:%d PDU:%d len:%d MAC", rssi, frame->pdu, frame->length);
+	// for(int i = 0; i < SYNTHPASS_MAC_SIZE; ++i) {
+	// 	printf(":%02x", frame->mac[i]);
+	// }
+	// printf("\n");
 
 	SynthPass_MessageType_T type = frame->msg.hdr.msg_type;
 
@@ -157,7 +157,16 @@ void incoming_frame_handler() {
 					.rx_rssi=corrected_rssi
 				};
 
-				synthpass_tx(SYNTHPASS_PROX, (uint8_t*)&msg, sizeof(msg));
+				// Delay_Ms(10);
+				
+				uint8_t status = synthpass_tx(SYNTHPASS_PROX, (uint8_t*)&msg, sizeof(msg));
+
+				// printf("replying with PROX...\n");
+				// if(status == 0) {
+				// 	printf("proxbeep!\n");
+				// } else {
+				// 	printf("sad proxbeep :(\n");
+				// }
 
 				// add sender_uid to peers
 				
@@ -172,7 +181,7 @@ void incoming_frame_handler() {
 				SynthPass_Prox_T *rxData = (SynthPass_Prox_T *) frame->msg.data;
 				if(rxData->peer_uid == synthpass_uid) {
 					printf("PROX peer uid");
-					printf_uid(rxData->peer_uid);
+					printf_uid(frame->msg.hdr.sender_uid);
 					printf(" rx_rssi=%d\n", rxData->rx_rssi);
 				} else {
 					printf("(not for me) PROX\n");

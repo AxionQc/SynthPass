@@ -72,17 +72,17 @@ typedef enum {
 } SynthPass_MessageType_T;
 
 // Message data structs
-typedef struct {
+typedef struct __attribute__((__packed__)) {
     uint32_t peer_uid;
     int8_t rx_rssi;
 } SynthPass_Prox_T; // Prox/Boop/Unboop
 
-typedef struct {
+typedef struct __attribute__((__packed__)) {
     uint32_t peer_id;
     uint8_t user_info[237];
 } SynthPass_ProxData_T; // ProxData/BoopData
 
-typedef struct {
+typedef struct __attribute__((__packed__)) {
     uint32_t peer_id;
 } SynthPass_ProxDataAck_T; // ProxDataAck/BoopDataAck
 
